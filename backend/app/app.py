@@ -1,6 +1,5 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Form
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import StreamingResponse
-import pandas as pd
 from io import BytesIO
 import zipfile
 from .helpers import read_file, column_checker, reindex_well, write_conversion_rate, write_conversion_pressure, write_conversion_completion

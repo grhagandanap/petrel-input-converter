@@ -42,7 +42,7 @@ def column_checker(df, required_cols: List[str], sheet_name=None, perforation = 
 
     return df
 
-def data_preprocessing(df, rename_dict: dict, perforation = True):
+def data_preprocessing(df, rename_dict: dict, perforation = None):
 
     df = df.rename(columns=rename_dict)
 
