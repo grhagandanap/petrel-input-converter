@@ -2,7 +2,6 @@ import pandas as pd
 from fastapi import HTTPException
 from typing import List
 from io import StringIO, BytesIO
-from datetime import datetime
 
 async def read_file(file):
     filename = file.filename
@@ -34,9 +33,9 @@ def column_checker(df, required_cols: List[str], sheet_name=None, perforation = 
 
     if missing:
         if sheet_name:
-            raise HTTPException(status_code=400, detail=f"Please provide {", ".join(missing)} columns on {sheet_name}!")
+            raise HTTPException(status_code=400, detail=f"Please provide {', '.join(missing)} columns on {sheet_name}!")
         else:
-            raise HTTPException(status_code=400, detail=f"Please provide {", ".join(missing)} columns!")
+            raise HTTPException(status_code=400, detail=f"Please provide {', '.join(missing)} columns!")
 
     df = data_preprocessing(df, item_columns, perforation)
 

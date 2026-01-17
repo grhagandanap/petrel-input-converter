@@ -1,26 +1,43 @@
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
 import zipfile
+from typing import List
 from .helpers import read_file, column_checker, reindex_well, write_conversion_rate, write_conversion_pressure, write_conversion_completion
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:5173"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/convert/rate")
 async def convert_rate(
     file: UploadFile = File(...), 
     time_domain: str = Form(...),
-    fluids_list: str = Form(...)):
+    fluids_list: List[str] = Form(...)):
     
     # read the file
     dict_result = await read_file(file)
     df = next(iter(dict_result.values()))
+    print(fluids_list)
 
     # make uniform
-    fluids_list = [f.upper() for f in fluids_list.split(',')]
+    fluids_list = [f.upper() for f in fluids_list]
+    print(fluids_list)
 
     # column check and data preprocessing
     required_cols = ['UWI','DATE']+fluids_list
+    print(required_cols)
     df = column_checker(df, required_cols)
 
     # group by 
